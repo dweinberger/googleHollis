@@ -1,0 +1,182 @@
+.match_on{
+	border: 8px solid #FFAA00;
+	background-color: #FFFEAE;
+	box-shadow: 5px 5px 5px  #909090;
+}
+.match_off{
+	border: 1px solid #2699FF;
+	background-color: #E4E49C;
+}
+.no_match{
+	border: 1px solid #7C7C7C;
+	background-color: #E6E6E6;
+}
+h1{
+  font-size:20pt;
+  font-family:"Helvetica Neue",Geneva,Arial,Sans Serif;
+  width:100%;
+  background-color: #9E000F;
+  color:#ffffee;
+}
+p,.small,.example{
+  font-family: "Helvetica Neue",Geneva,Arial,Sans Serif;
+  font-size: 11pt;
+  text-align:left;
+}
+.small{
+	font-size:9px;
+}
+.example{
+	font-style:italic;
+	color: gray;
+	
+}
+#searchbox{
+	font-family: Georgia,Bookman,Serif;
+	font-size: 16px;
+	width: 350px;
+	height: 18px;
+	background-color: #FDFFDD
+}
+#clearstack{
+	display:none;
+}
+.authorspan,.titlespan,.snippetspan{
+	font-family: "Helvetica Neue",Arial,Verdana,Geneva,Sans Serif;
+	font-size: 14px;
+	padding: 5px;
+}
+.titlespan{
+	font-style:italic;
+	
+}
+.resultsdiv{
+	width: 400px;
+	border: 1px solid #FF9F2F;
+	margin:5px;
+	border-radius: 10px; 
+	padding: 5px;
+	line-height: 1.0;
+}
+.snippetspan{
+	font-style:italic;
+	font-size:11px;
+	
+}
+
+.googlelink,.stacklifelink-isbn,.stacklifelink-fuzzy, .viewlink, #hideviewer{
+	font-family: "Helvetica Neue",Arial,Verdana,Geneva,Sans Serif;
+	font-size: 12px;
+	border-radius: 5px;
+	padding: 1px;
+	text-decoration: none;
+	cursor: pointer;
+}
+#hideviewer{
+	background-color: red;
+	color: white;
+	width: 100%;
+	text-align:center;
+	font-size: 14px;
+}
+.googlelink{
+		border: 1px solid #FFD454;
+		background-color: #FFE7BF;
+		color: #FF8745;
+}
+.viewlink{
+		border: 1px solid #DE493D;
+		background-color:#D51701;
+		color: white;
+		font-size: 12px;
+}
+
+#stackviewdiv{
+	left: 500px;
+	top: 200px;
+	position:absolute;
+	height: 800px;
+}
+#viewerContainer{
+	left: 500px;
+	top: 200px;
+	position:absolute;
+	height: 800px;
+	width: 100%
+    z-index:10000;
+    box-shadow: 5px 5px 5px #909090; 
+}
+#viewerCanvas{
+   
+   width:600px;
+    height: 800px;
+ z-index: 12000;
+
+}
+.whichgresult{
+	color: blue;
+	background-color: white;
+	border: 1 solid #000;
+	text-align:center;
+	padding: 4px;
+	font-family: "Helvetica Neue",Arial,Verdana,Geneva,Sans Serif;
+	font-size: 14px;
+	border-radius: 50%;
+}
+/* stacklife link badges for google results stack*/
+
+.stacklifelink-isbn{
+	background-color:#C3E9F0;
+	color:#3573E4;
+}
+.stacklifelink-fuzzy{
+	background-color:#51A5F0;
+	color: #C3E9F0;
+}
+.gresultnumber{
+	border: 1px solid black;
+	font-family: "Helvetica Neue",Arial,Verdana,Geneva,Sans Serif;
+	font-size: 20px;
+	color: white;
+	background-color: #C9E7FF; 
+	position: relative;
+	left: -10px;
+	border-radius: 50%;
+	padding: 3px;
+	box-shadow: 5px 5px 5px #909090;
+	cursor: pointer;
+}
+.gresultnumber:hover{
+	background-color: #5DD8F1;
+}
+.gresultnumber:active{
+	box-shadow: 0px 0px 0px #909090;
+	left: -2px;
+}
+.on{
+	background-color:#2166C1;
+	color: white;
+}
+.off{
+	background-color: #7898E4;
+	color: white;
+}
+.gray{
+	background-color: #737373;
+	color: #E2E2E2;
+	border: 1px solid #3D3D3D;
+	box-shadow: 0px 0px 0px #909090;
+	
+}
+.explanation{
+  font-size:10pt;
+  text-decoration: underline;
+  }
+#explans{
+  width:500px;
+  border-width: 1px;
+  font-family: Helvetica,Geneva,Arial,Sans Serif;
+  color: gray;
+  margin-left:50px;
+  }
+

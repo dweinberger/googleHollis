@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>googleHollis</title>
+	<meta name="generator" content="BBEdit 10.5" />
+ 	<link type="text/css" rel="stylesheet" href="css/googleHollis.css">
+  	<script type="text/javascript" src="includes/jquery-1.11.0.min.js"></script>
+  	<script type="text/javascript" src="js/googleHollis.js"></script>
+	<script type="text/javascript" src="includes/stackview/js/jquery.stackview.min.js"></script>
+	<link rel="stylesheet" href="includes/stackview/css/jquery.stackview.css" type="text/css" />
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script>
+	 google.load("books", "0");
+   $( document ).ready(function() {
+	  init()
+   });
+</script>
+</head>
+<body>
+<h1>&nbsp;&nbsp;HOLLIS Full Text Search [demo/prototype]</h1>
+
+<p>This is an experiment using Google Books as a way to do full text searches of HOLLIS. Type in text within a book you're looking for and we search Google Books, and then look in HOLLIS for the books Google Books returns. [<span onclick="toggleExplanation()" class="explanation" id="explan">More</span>]</p> 
+<div id="explans" style="display:none;"> 
+<p>The results from Google Books will be on the left. The corresponding books in HOLLIS are listed on the right. Click on a number to the left of a Google Book result to toggle the corresponding books in the shelf to the right.</p>
+<p>Books in the HOLLIS stack preceded by a check mark are almost certainly the books the Google Book results are referring to; one of the numeric book identifiers matched up. Otherwise, we're doing our best to match titles and the author's last name.</P> 
+<p>The stack of books on the right is scrollable. The depth of the color blue indicates how often that work is consulted by the Harvard community. The height of the book indicates how many pages are in it. It's length is proportional to its actual length.</p>
+</div>
+
+<div>
+		<textarea class="searchbox" id="searchbox"></textarea>
+		<input type="button" value="Search Google Books"  onclick="doSearch()"><br />
+		<input type="button" id="clearstack" value="Clear stack" onclick="clearStack()">
+		<!-- canned examples -->
+	<!-- span class="example">Samples:</span -->
+	  <select id="sampleslist" tabindex="1" >
+	  <option  value="sample">--- Select a sample query --</option>
+	    <option  value="newproject">Aristotle Shakespeare virtue</option>
+		<option  value="refreshprojects">"is this a dagger"</option>
+		<option  value="addnotes">"Bond. James Bond."</option>
+		<option  value="showbooklist">"Lewis Carrol" Freud</option>
+	  </select>
+
+</div>
+
+<div id="resultscontainer">
+	<div id="searchresults"></div>
+	<div id="stackviewdiv"></div>
+</div>
+<div id="viewerContainer" style="display:none">
+	<div id="hideviewer" onclick="hideViewer()">Hide</div>
+	<div id="viewerCanvas">
+		
+	</div>
+</div>
+</body>
+</html>

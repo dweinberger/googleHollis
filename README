@@ -1,0 +1,28 @@
+fulltext-Hollis
+===============
+
+Full-text search of Harvard's library holdings by using Google Books matched up with Harvard via LibraryCloud
+
+Searchges Google Books via its API. It then matches the results with the holdings in Harvard's HOLLIS collection of 13M books. If it doesn't find a match on ISBN, LCCN, or OCLC identifiers, it looks for a match on the title and the author's last name.
+    
+Written by a non-developer at the Harvard Library Innovation Lab,
+so pardon the lack of skill, and don't blame the Lab for it.
+This is presented as open source software.
+
+- David Weinberger
+  self@evident.com
+
+
+License
+Dual licensed under the MIT license (below) and GPL license.
+
+GPL License
+http://www.gnu.org/licenses/gpl-3.0.html
+
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+This permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
