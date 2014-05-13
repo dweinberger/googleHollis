@@ -28,25 +28,31 @@
 </div>
 
 <div>
+		<!-- search box -->
 		<textarea class="searchbox" id="searchbox"></textarea>
 		<input type="button" value="Search Google Books"  onclick="doSearch()"><br />
-		<input type="button" id="clearstack" value="Clear stack" onclick="clearStack()">
+	
 		<!-- canned examples -->
-	<!-- span class="example">Samples:</span -->
-	  <select id="sampleslist" tabindex="1" >
-	  <option  value="sample">--- Select a sample query --</option>
-	    <option  value="newproject">Aristotle Shakespeare virtue</option>
-		<option  value="refreshprojects">"is this a dagger"</option>
-		<option  value="addnotes">"Bond. James Bond."</option>
-		<option  value="showbooklist">"Lewis Carrol" Freud</option>
+	  	<select id="sampleslist" tabindex="1" >
+			<option  value="sample">--- Select a sample query --</option>
+			<option  value="newproject">Aristotle Shakespeare virtue</option>
+			<option  value="refreshprojects">"is this a dagger"</option>
+			<option  value="addnotes">"Bond. James Bond."</option>
+			<option  value="showbooklist">"Lewis Carrol" Freud</option>
 	  </select>
+	  <!-- clear the stack button -->
+	  <input type="button" id="clearstack" value="Clear stack" onclick="clearStack()">
 
 </div>
 
 <div id="resultscontainer">
+	<!-- search results from google books -->
 	<div id="searchresults"></div>
+	<!-- search results from Hollis -->
 	<div id="stackviewdiv"></div>
 </div>
+
+<!-- google books viewer -->
 <div id="viewerContainer" style="display:none">
 	<div id="hideviewer" onclick="hideViewer()">Hide</div>
 	<div id="viewerCanvas">

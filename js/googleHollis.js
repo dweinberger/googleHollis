@@ -184,7 +184,7 @@ function buildResultsArray(result) {
             		alert("We couldn't find this book in HOLLIS. Click 'view' to try reading it at Google Books.");
             		return
             	}
-            	var num = $(this).text().trim();
+            	var num = $(this).text().trim(); // get numb of googresult clicked on
             	var pardiv = $(this).parent()[0]; // get parent div
             	var items = new Array();
             	items = $('.stack-item');
@@ -194,12 +194,17 @@ function buildResultsArray(result) {
             		$(pardiv).removeClass('match_on no_match');
             		$(pardiv).addClass("match_off");
             		// hide stackview items from that google result
+            		// calculate speed of slideUp/down
+						var spines = $("[googresult=" + num + "]");
+						var num_of_spines = spines.length;
+						var speedeach = (500 + (10 *  num_of_spines));
+					// go through every stack item
             		for (var m = 0; m < items.length; m++){
 						// get the whichgresult span
 						var wh = $( ".whichgresult", items[m])[0];
-						var txt = $(wh).text().trim();
+						var txt = $(wh).text().trim(); // get the number of the item to slide
 						if (txt == num){
-							$(items[m]).slideUp(400);
+							$(items[m]).slideUp(speedeach);
 						}	
             		}
             	}
@@ -215,7 +220,7 @@ function buildResultsArray(result) {
 							var wh = $( ".whichgresult", items[m])[0];
 							var txt = $(wh).text().trim();
 							if (txt == num){
-								$(items[m]).slideDown(400);
+								$(items[m]).slideDown(speedeach);
 							}
 						}
             		}
@@ -397,7 +402,7 @@ function displayAggregateStack(tarray){
 			var tit = itemdocs[k].title;
 			// prefix it with the google result number this refers to
 			var whichresult = tarray[i].gresultnumber
-			tit = "<span class='whichgresult' title='Google Result #' + whichresult + '.'>" + whichresult + " </span>&nbsp;&nbsp;" + tit;
+			tit = "<span class='whichgresult' title='Google Result #" + whichresult + ".' googresult='" + whichresult + "'>" + whichresult + " </span>&nbsp;&nbsp;" + tit;
 			// if it's an isbn match, flag that we're certain by adding a checkmark
 			if (idmatch){
 				tit = "&#x2713; " + tit;
