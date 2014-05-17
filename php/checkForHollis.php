@@ -49,6 +49,7 @@ http://hlslwebtest.law.harvard.edu/v2/api/item/?filter=collection:hollis_catalog
    			debugPrint("author is firstname: $a");
    		}
    		$tit = $book->tit;
+   		$tit = trim($tit, ". ?!,t\n\r\0\x0B");
    		$noIsbn = true;
    		debugPrint("# $i TITLE = . $tit  LASTNAME : $a");
 
@@ -150,10 +151,10 @@ http://hlslwebtest.law.harvard.edu/v2/api/item/?filter=collection:hollis_catalog
    			else {
    				$auth = $a . ",*"; // 
    			}
-			$tit = urlencode($tit);
+			$tith = urlencode($tit);
 			$auth = urlencode($auth);
 				
-			$queryurl = "http://hlslwebtest.law.harvard.edu/v2/api/item/?filter=collection:hollis_catalog%20AND%20title_keyword:%22$tit%22%20AND%20creator:" . $auth;
+			$queryurl = "http://hlslwebtest.law.harvard.edu/v2/api/item/?filter=collection:hollis_catalog%20AND%20title_keyword:%22$tith%22%20AND%20creator:" . $auth;
 			
 			debugPrint("AUTHOR QUERY: $queryurl");
 		
@@ -168,8 +169,44 @@ http://hlslwebtest.law.harvard.edu/v2/api/item/?filter=collection:hollis_catalog
 			$enhancedhollisrecord = $recorddecoded;
 			$enhancedhollisrecord->IDfound = array();
 			$enhancedhollisrecord->gresultnumber = $i;
+			
+			// loop through the books found for this match, 
+			// removing ones where the first word of the title doesn't match the first
+			// word of the title of the google book. This takes care of
+			// keyword matches where the titles are obviously wrong for the google book
 			if (isset($recorddecoded->num_found)){ 
 				debugPrint("Books found for author query: " . $recorddecoded->num_found);
+				if (is_array($recorddecoded->docs)){
+				debugPrint("In book $i . Docs count = " . count($recorddecoded->docs));
+				for ($m=0; $m < count($recorddecoded->docs); $m++){
+					// "normalize" the titles
+					$htit = $recorddecoded->docs[$m]->title;
+					$htith = strtolower($htit);
+					$gtit = strtolower($tit);
+					$gtit = preg_replace('/^(the |a |an |der |das )|/', '', $gtit);
+					$htith = preg_replace('/^(the |a |an |der |das )|/', '', $htith);
+					
+					debugPrint("hollis title:  >$htith< gdocs title: >$gtit< strpos: " . strpos($htith,$gtit));
+					if (strpos($htith,$gtit) !== 0){
+						debugPrint("removing doc $m");
+						unset($recorddecoded->docs[$m]);
+						// reduce number found
+						$recorddecoded->num_found = $recorddecoded->num_found - 1;
+					}
+				}
+				// the docs are now numbered with gaps. renumber them consequetively
+				$how_many_docs = count($recorddecoded->docs);
+				$ctr=0;
+				$newdocarray = array();
+				for ($p=0; $p < $how_many_docs; $p++){
+					if (isset($recorddecoded->docs[$p])){
+						//$recorddecoded->docs[$ctr] = $recorddecoded->docs[$p];
+						$newdocarray[$ctr] = $recorddecoded->docs[$p];
+						$ctr = $ctr + 1;
+					}
+				}
+				$recorddecoded->docs = $newdocarray;
+				}
 			}
 			else {
 				debugPrint("No num_found for author query");

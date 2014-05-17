@@ -19,7 +19,7 @@
 </head>
 <body>
 <h1>&nbsp;&nbsp;HOLLIS Full Text Search [demo/prototype]</h1>
-
+<p><em>NOTE: The Google Books API only allows 2,000 queries a day. If this site is unresponsive, we might be over quota.</em></p>
 <p>This is an experiment using Google Books as a way to do full text searches of HOLLIS. Type in text within a book you're looking for and we search Google Books, and then look in HOLLIS for the books Google Books returns. [<span onclick="toggleExplanation()" class="explanation" id="explan">More</span>]</p> 
 <div id="explans" style="display:none;"> 
 <p>The results from Google Books will be on the left. The corresponding books in HOLLIS are listed on the right. Click on a number to the left of a Google Book result to toggle the corresponding books in the shelf to the right.</p>
@@ -29,16 +29,19 @@
 
 <div>
 		<!-- search box -->
-		<textarea class="searchbox" id="searchbox"></textarea>
-		<input type="button" value="Search Google Books"  onclick="doSearch()"><br />
+		<textarea class="searchbox" id="searchbox"></textarea><br />
+		<input type="button" value="Search Google Books" id="searchbutton" onclick="doSearch()">
+		<!-- span class="explanation">Press the enter key to search</span -->
+		
 	
 		<!-- canned examples -->
 	  	<select id="sampleslist" tabindex="1" >
 			<option  value="sample">--- Select a sample query --</option>
-			<option  value="newproject">Aristotle Shakespeare virtue</option>
-			<option  value="refreshprojects">"is this a dagger"</option>
-			<option  value="addnotes">"Bond. James Bond."</option>
-			<option  value="showbooklist">"Lewis Carrol" Freud</option>
+			<option  value="arist">Aristotle Shakespeare virtue</option>
+			<option  value="dagger">"is this a dagger"</option>
+			<option  value="bond">"Bond. James Bond."</option>
+			<option  value="lc">"Lewis Carrol" Freud</option>
+			<option  value="wash">washington</option>
 	  </select>
 	  <!-- clear the stack button -->
 	  <input type="button" id="clearstack" value="Clear stack" onclick="clearStack()">
@@ -59,5 +62,6 @@
 		
 	</div>
 </div>
+<div id="loading" style="display:none"></div> <!-- loading symbol -->
 </body>
 </html>

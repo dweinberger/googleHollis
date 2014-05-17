@@ -26,6 +26,17 @@ function Book(title, subtitle, snippet, authors, pub,city,date,isbn,snippet,goog
 
 var gbooks = new Array();
 
+// copy an array not by ReferenceError// http://stackoverflow.com/questions/7486085/copying-array-by-value-in-javascript
+// Object.prototype.clone = function() {
+//   var newObj = (this instanceof Array) ? [] : {};
+//   for (i in this) {
+//     if (i == 'clone') continue;
+//     if (this[i] && typeof this[i] == "object") {
+//       newObj[i] = this[i].clone();
+//     } else newObj[i] = this[i]
+//   } return newObj;
+// };
+
 //=========== END of globals ===============
 
 function init(){
@@ -51,6 +62,7 @@ function init(){
 }
 
 function doSearch(){
+	 $("#loading").show();
 	var searchterm = $("#searchbox").val();
 	// show the clearall button
    $("#clearstack").show();
@@ -65,6 +77,7 @@ function doSearch(){
  		url: uri,
  		async: false,
  		success: function(r,mode){
+ 				 $("#loading").hide();
                	buildResultsArray(r);
             }
   });
@@ -73,6 +86,14 @@ function doSearch(){
 
 function buildResultsArray(result) {
             //iterate each returned item 
+            
+            // if no results from google
+            if (result.totalItems == 0){
+            	$("#searchresults").html("");
+            	$("#stackviewdiv").html("");
+            	alert("No results found at Google Books for " + $("#searchbox").val());
+            	return
+            }
            gbooks.length=0; // initialize global array of google results
             for (var k=0; k < result.items.length; k++) {
               	// var k = row.volumeInfo.title;
@@ -273,6 +294,7 @@ function lookUpHollis(){
                 respo = r;
                 showHollisMatches(r);
             }
+        
   });
 }
 
@@ -280,7 +302,13 @@ function showHollisMatches(r){
 	// we got the results of searching librarycloud for the tiles, lastnames and isbns 
 	// of the google results. Examine those results and plug in any hollis matches
 	
-	var barray = JSON.parse(r);
+	var barray = JSON.parse(r); 	// full set of Hollis returns, one set for each google result.
+	// copy the array not by reference. (Merely using = makes one update the other)
+	var docarray = new Array();;//d books
+	for (var i = 0; i < barray.length; i++){
+		docarray[i] = barray[i].docs;
+	}
+		
 	
 	// build stackview
 	displayAggregateStack(barray);
@@ -293,19 +321,20 @@ function showHollisMatches(r){
 	// loop through the results for each google return
 	for (var i=0; i < gbooks.length; i++){
 		var book = new Book();
-		var hollisResults = barray[i]; 
+		var oneHollisResult = barray[i]; 
 		// reset border
 		var pardiv = googleresults[i];
 		$(pardiv).removeClass('match_on match_off no_match');
         $(pardiv).addClass("no_match");
 		// was it a matched isbn?
-		var idtype = hollisResults['IDfound'].type;
+		var idtype = oneHollisResult['IDfound'].type;
 		if ( (idtype !== undefined) & ("isbn oclc lccn".indexOf(idtype) > -1)){
 			// put stacklife launcher button into the google result
 			var hollisspan = document.createElement("span");
 			hollisspan.setAttribute("class","stacklifelink-isbn");
-			hollisspan.innerHTML = "&nbsp;<span onclick='openStacklife(\"" + hollisResults.docs[0].id + "\")'>Stacklife</span>";
-			//hollisspan.innerHTML = "&nbsp;<a  target='_blank' href='http://stacklife.harvard.edu/item/a/" + hollisResults.docs[0].id + "' title='See this book in StackLife.'>Stacklife</a>"; 
+			// insert Stacklife idea into the button
+			hollisspan.innerHTML = "&nbsp;<span onclick='openStacklife(\"" + oneHollisResult.docs[0].id + "\")'>Stacklife</span>";
+			//hollisspan.innerHTML = "&nbsp;<a  target='_blank' href='http://stacklife.harvard.edu/item/a/" + oneHollisResult.docs[0].id + "' title='See this book in StackLife.'>Stacklife</a>"; 
 			googleresults[i].appendChild(hollisspan);
 			// light up the list Number
 			var num = $(".gresultnumber",googleresults[i])[0];
@@ -323,13 +352,16 @@ function showHollisMatches(r){
  		}
 		else {
 			// was there a hollis record, indicating a match
-			var numfound = hollisResults['num_found'];
-			if (numfound > 0){
+			var numfound = oneHollisResult['num_found'];
+
+			// check for the first .doc in this particular record. If there is one, 
+			// then we found at least one auth-name match
+			if ((numfound > 0) && (oneHollisResult.docs[0] !== undefined)){
 				var hollisspan = document.createElement("span");
 				hollisspan.setAttribute("class","stacklifelink-fuzzy");
 				//hollisspan.innerHTML="TEST";
-				//hollisspan.innerHTML = " <a  target='_blank' href='http://stacklife.harvard.edu/item/a/" + hollisResults.docs[0].id + "' title='Many possible Hollis matches on this item'>Feeling lucky</a>"; 
-				hollisspan.innerHTML = "&nbsp;<span onclick='openStacklife(\"" + hollisResults.docs[0].id + "\")'>Feeling lucky?</span>";
+				//hollisspan.innerHTML = " <a  target='_blank' href='http://stacklife.harvard.edu/item/a/" + oneHollisResult.docs[0].id + "' title='Many possible Hollis matches on this item'>Feeling lucky</a>"; 
+				hollisspan.innerHTML = "&nbsp;<span onclick='openStacklife(\"" + oneHollisResult.docs[0].id + "\")'>Feeling lucky?</span>";
 				googleresults[i].appendChild(hollisspan);
 				// light up the list Number
 				var num = $(".gresultnumber",googleresults[i])[0];

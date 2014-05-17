@@ -33,13 +33,17 @@ p,.small,.example{
 }
 #searchbox{
 	font-family: Georgia,Bookman,Serif;
-	font-size: 30px;
-	width: 600px;
-	height: 32px;
+	font-size: 24px;
+	width: 400px;
+	height: 28px;
 	background-color: #FDFFDD;
 	color: brown;
 	text-align: center;
 	border-radius: 8px;
+}
+#searchbutton{
+	background-color: green;
+	color: white;
 }
 #clearstack{
 	display:none;
@@ -96,7 +100,7 @@ p,.small,.example{
 
 #stackviewdiv{
 	left: 500px;
-	top: 150px;
+	top: 200px;
 	position:absolute;
 	height: 800px;
 }
@@ -187,4 +191,16 @@ p,.small,.example{
   color: gray;
   margin-left:25px;
   }
-
+#loading {
+   
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .5 ) 
+                url('../images/waiting.gif') 
+                50% 50% 
+                no-repeat;
+}
