@@ -41,9 +41,16 @@ p,.small,.example{
 	text-align: center;
 	border-radius: 8px;
 }
-#searchbutton{
+#newsearchbutton{
 	background-color: green;
 	color: white;
+	border-radius: 5px;
+}
+#next10{
+	background-color: #9DFF98;
+	color: #438E3A;
+	border-radius: 5px;
+	display: none;
 }
 #clearstack{
 	display:none;
@@ -64,6 +71,7 @@ p,.small,.example{
 	border-radius: 10px; 
 	padding: 5px;
 	line-height: 1.0;
+	position: relative;
 }
 .snippetspan{
 	font-style:italic;
@@ -71,7 +79,7 @@ p,.small,.example{
 	
 }
 
-.googlelink,.stacklifelink-isbn,.stacklifelink-fuzzy, .viewlink, #hideviewer{
+.googlelink,.stacklifelink-isbn,.stacklifelink-fuzzy, .viewlink, .morebtn, #hideviewer{
 	font-family: "Helvetica Neue",Arial,Verdana,Geneva,Sans Serif;
 	font-size: 12px;
 	border-radius: 5px;
@@ -97,6 +105,12 @@ p,.small,.example{
 		color: white;
 		font-size: 12px;
 }
+.morebtn{
+	border: 1px solid #1F5E28;
+	color: #2B8137;
+	font-size: 12px;
+	
+}
 
 #stackviewdiv{
 	left: 500px;
@@ -104,6 +118,7 @@ p,.small,.example{
 	position:absolute;
 	height: 800px;
 }
+
 #viewerContainer{
 	left: 500px;
 	top: 200px;
@@ -164,6 +179,22 @@ p,.small,.example{
 .gresultnumber:active{
 	box-shadow: 0px 0px 0px #909090;
 	left: -2px;
+}
+.helpballoon{
+	border: 2px solid #096D14;
+	background-color: #FDFFD7;
+	position: absolute;
+	font-size: 12px;
+	margin-left: 30px;
+	margin-top: -60px;
+	box-shadow: 8px 8px 8px #909090;
+	width: 200px;
+	text-align: left;
+	z-index: 10000;
+	color: #00770D;
+	font-family: Georgia, Bookman, Serif;
+	border-radius: 5px;
+	padding: 5px;
 }
 .on{
 	background-color:#2166C1;

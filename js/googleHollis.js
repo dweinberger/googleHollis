@@ -40,7 +40,7 @@ var gbooks = new Array();
 //=========== END of globals ===============
 
 function init(){
-	
+	 google.load("books", "0");
 	// find return key to execute search
 	$("#searchbox").keydown(function(event){
       if(event.keyCode == 13){
@@ -58,18 +58,50 @@ function init(){
 		doSearch();
 		}
 	});
+	
+	
+$( "[help]" ).mouseover(
+  function() {
+  	popupHelp(this);
+    //$( this ).append( $( "<span> ***</span>" ) );
+  }
+);
+ 
 
 }
 
-function doSearch(){
+function popupHelp(e){
+	$(".helpballoon").remove(); // remove the old
+	var balloon = document.createElement("div");
+	var txt = $(e).attr("help");
+	balloon.setAttribute("class","helpballoon");
+	balloon.setAttribute("id","helpballoon");
+	balloon.innerHTML=txt;
+	e.appendChild(balloon);
+}
+
+function doSearch(which){
 	 $("#loading").show();
 	var searchterm = $("#searchbox").val();
 	// show the clearall button
    $("#clearstack").show();
+   // get offset
+   if (which == "NEXT"){
+   		var startoffset = parseInt($("#next10").attr("start"));
+   	}
+   	else {
+   		var startoffset = 0;
+   	}
+   $("#next10").val("Get next 10");
+   document.getElementById("next10").setAttribute("start", startoffset + 10);
+   $("#next10").show();
+   // get the offset for the search (paging)
+   
 	// build the google books query
 	searchterm = encodeURI(searchterm);
 	var uri = "https://www.googleapis.com/books/v1/volumes?q=" + searchterm;
 	uri = uri + "&printType=books&key=AIzaSyBgu8Iu6qKe9Kxf9Q9LLlJxgZfgcwQhi_4";
+	uri = uri +  "&startIndex=" + startoffset;
 	//uri = "https://www.googleapis.com/books/v1/volumes?q=flowers+inauthor:keyes&key=AIzaSyADnM14pkT7fq0YqXLtTpiUmApeQcH144Y";
 		$.ajax({
   		type: "GET",
@@ -138,20 +170,19 @@ function buildResultsArray(result) {
 				}
 			//); //end iteration of data returned from server and append to the list
             
-			showGoogleResults();
+			showGoogleResults(result);
 			lookUpHollis(); 
  }
  
- function showGoogleResults(){
+ function showGoogleResults(result){
 	// google results have been put into gbooks. Now show  those results
 	var resultsdiv = document.getElementById("searchresults");
     resultsdiv.innerHTML ="";
       for (var i=0; i < gbooks.length; i++){
       		var item = gbooks[i];
-			 // create new div for the search result
-			 var oneresultdiv = document.createElement("div");
-			 oneresultdiv.setAttribute("class","resultsdiv no_match");
-		
+			// create new div for the search result
+			var oneresultdiv = document.createElement("div");
+			oneresultdiv.setAttribute("class","resultsdiv no_match");
  			 // show the number of the return
 			 var newspan = document.createElement("span");
 			 newspan.setAttribute("class","gresultnumber gray");
@@ -177,6 +208,29 @@ function buildResultsArray(result) {
 				}
 			 oneresultdiv.appendChild(newspan);
 			 document.getElementById("searchresults").appendChild(oneresultdiv);
+			     // insert more info button
+            var resvol = result.items[i].volumeInfo;
+			var subt = resvol.subtitle;
+			meta_gbook = "<b><i>" + resvol.title + "</i></b><br />";
+			meta_gbook =  meta_gbook + "<b>Subtitle</b>: " + resvol.subtitle + "<br />";
+			if (resvol.authors !== undefined){
+				meta_gbook =  meta_gbook + "<b>Creator(s)</b>: " + resvol.authors.join("; ") + "<br />";
+			}
+			meta_gbook = meta_gbook + "<b>Date</b>: " + resvol.publishedDate + "<br />";
+			meta_gbook = meta_gbook + "<b>Publisher</b>: " + resvol.publisher + "<br />";
+			meta_gbook = meta_gbook + "<b>Language</b>: " + resvol.language + "<br />";
+			meta_gbook = meta_gbook + "<b>Pages</b>: " + resvol.pageCount + "<br />";
+			if (resvol.categories !== undefined){
+				meta_gbook = meta_gbook + "<b>Categories</b>: " + resvol.categories.join("; ");
+			}
+			// get rid of undefineds
+			meta_gbook = meta_gbook.replace(/undefined/g, '-');
+			var morebtn = document.createElement("span");
+			morebtn.setAttribute("class","morebtn");
+			$(morebtn).text("More info");
+			morebtn.setAttribute("help", meta_gbook);
+			morebtn.setAttribute("onclick","popupHelp(this)");
+			oneresultdiv.appendChild(morebtn);
 			 // insert snippet
 			 var newspan = document.createElement("span");
 			 newspan.setAttribute("class","snippetspan");
@@ -193,10 +247,15 @@ function buildResultsArray(result) {
             var newspan = document.createElement("span");
 			 newspan.setAttribute("class","viewlink");
 			 newspan.setAttribute("onclick","launchViewer('" + item.idstring + "')");
-			 newspan.innerHTML="View";  oneresultdiv.appendChild(newspan);
+			 newspan.innerHTML="View";  
+			 oneresultdiv.appendChild(newspan);
+        
+            
             // append the whole new div to the container
             resultsdiv.appendChild(oneresultdiv);
             }
+            
+          
             
             // make google search result numbers clickable
             $(".gresultnumber").click(function(){
@@ -248,6 +307,30 @@ function buildResultsArray(result) {
             	}
             	 
             });
+      
+      
+	// hovering over a results div will show the "help" attrib text
+  // $( "[help]" ).mouseover(
+//   function() {
+//   	var thisel = this;
+//   	setTimeoutConst = setTimeout(function(){
+//   			$(".helpballoon").remove();
+//              popupHelp(thisel);
+//          }, 300);
+//   }
+//   );
+//   // remove on mouseout
+  $( "[help]" ).mouseout(
+  function() {
+  	
+    $(".helpballoon" ).remove();
+  }
+  );
+ 
+  
+ 
+ 
+ 
 }
 
 
@@ -283,12 +366,12 @@ function lookUpHollis(){
 	}
   // go to php
   var booklistjson =  JSON.stringify(booklist);
-  
+  var startoffset = 10;
   $.ajax({
   		type: "POST",
  		
  		url: 'php/checkForHollis.php',
- 		data: {books : booklistjson},
+ 		data: {books : booklistjson, startIndex : startoffset},
  		async: false,
  		success: function(r,mode){
                 respo = r;

@@ -10,6 +10,7 @@ error_reporting(E_ALL);
 $booksj = $_REQUEST['books'];
 //debugPrint("BOOKSJ= . $booksj[0]");
 $books= json_decode($booksj);
+$start = $_REQUEST['startIndex'];
 
 function debugPrint($s){
 	if (1==2){
@@ -90,7 +91,7 @@ http://hlslwebtest.law.harvard.edu/v2/api/item/?filter=collection:hollis_catalog
    		// if WE HAVE GOOGLE IDs for the book, fetch it from librarycloud
    		if ($id_string !== ""){
    			$noIDresults = false;
-   			$queryurl = "http://hlslwebtest.law.harvard.edu/v2/api/item/?filter=collection:hollis_catalog" . $id_string;
+   			$queryurl = "http://hlslwebtest.law.harvard.edu/v2/api/item/?filter=collection:hollis_catalog" . $id_string . "&startIndex=" . $start;
    			//works: $queryurl = "http://hlslwebtest.law.harvard.edu/v2/api/item/?filter=collection:hollis_catalog%20AND%20id_isbn:0436203774";
 			debugPrint("ID query: $queryurl");
    			
