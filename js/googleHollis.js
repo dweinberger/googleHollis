@@ -25,6 +25,7 @@ function Book(title, subtitle, snippet, authors, pub,city,date,isbn,snippet,goog
 }
 
 var gbooks = new Array();
+var priorsearchterm = "";
 
 // copy an array not by ReferenceError// http://stackoverflow.com/questions/7486085/copying-array-by-value-in-javascript
 // Object.prototype.clone = function() {
@@ -83,6 +84,14 @@ function popupHelp(e){
 function doSearch(which){
 	 $("#loading").show();
 	var searchterm = $("#searchbox").val();
+	// is it different from last time we pressed?
+	if (searchterm != priorsearchterm){
+		document.getElementById("next10").setAttribute("start","0"); // reset next10 btn
+		document.getElementById("next10").setAttribute("title","Get #10-1#9"); // reset next10 btn
+		
+	}
+	priorsearchterm = searchterm; // save this searchterm in a global
+	
 	// show the clearall button
    $("#clearstack").show();
    // get offset
@@ -92,10 +101,15 @@ function doSearch(which){
    	else {
    		var startoffset = 0;
    	}
+   	
+   	// get the offset for the search (paging)
    $("#next10").val("Get next 10");
    document.getElementById("next10").setAttribute("start", startoffset + 10);
+   document.getElementById("next10").setAttribute("title","Get #" + (startoffset + 10) + "-#" + (startoffset + 19)); // help balloon
    $("#next10").show();
-   // get the offset for the search (paging)
+   
+   
+   
    
 	// build the google books query
 	searchterm = encodeURI(searchterm);
@@ -110,6 +124,8 @@ function doSearch(which){
  		async: false,
  		success: function(r,mode){
  				 $("#loading").hide();
+ 				 // delete existing stack
+   				$("#stackviewdiv").fadeOut(400);
                	buildResultsArray(r);
             }
   });
@@ -589,7 +605,7 @@ function clearStack(){
 	var gRes = $(".gresultnumber");
 	// hide the stack items
 	for (var i=0; i < allLi.length; i++){
-		$(allLi[i]).fadeOut(200);
+		$(allLi[i]).fadeOut(400);
 		
 	}
 	// turn off the google results and google numbers

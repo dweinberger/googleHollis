@@ -13,7 +13,7 @@ $books= json_decode($booksj);
 $start = $_REQUEST['startIndex'];
 
 function debugPrint($s){
-	if (1==2){
+	if (1==1){
 		error_log($s);
 	}
 }
@@ -59,14 +59,14 @@ http://hlslwebtest.law.harvard.edu/v2/api/item/?filter=collection:hollis_catalog
    			$ids = $book->ids;
    			$num_of_ids = count($ids);
    		}
-   		else {$num_of_ids = -1;} // flag no identifiers
+   		else { // flag no identifiers
+   			$num_of_ids = -1;
+   		} 
    		debugPrint("IDs length: " . $num_of_ids);
    		$id_string=""; // the string for the query
-   		// if we have any ids, then start the parenthesis
-   		if ($num_of_ids > 0){
-   			$id_string = "%20AND%20(";
-   		}
+   		
    		// go through the array of ID's, building the query string
+   		$got_id = false;
    		for ($y=0; $y < $num_of_ids; $y++){
    			$id_type = $book->ids[$y]->type; // get the type
    			$id_value = $book->ids[$y]->identifier; // get the value
@@ -74,6 +74,7 @@ http://hlslwebtest.law.harvard.edu/v2/api/item/?filter=collection:hollis_catalog
    			// is the id in the array of librarycloud identifiers?
    			if (array_key_exists($id_type, $id_array)){
    				// if this is the second or more id, then we need an OR
+   				$got_id = true;
    				if ( $y > 0){
    					$id_string = $id_string . "%20OR%20";
    				}
@@ -82,11 +83,13 @@ http://hlslwebtest.law.harvard.edu/v2/api/item/?filter=collection:hollis_catalog
    			}
    		}
    			// close the parentheses if we in fact started it
-   			if ($num_of_ids > 0){
+   			if ($got_id){
    					$id_string = $id_string . ")";
    			}
    		
+   		
    		debugPrint("$i) ID_STRING: $id_string");
+   		$noIDresults = true;
    		
    		// if WE HAVE GOOGLE IDs for the book, fetch it from librarycloud
    		if ($id_string !== ""){
