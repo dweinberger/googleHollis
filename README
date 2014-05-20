@@ -1,7 +1,7 @@
-fulltext-Hollis
+googleHollis
 ===============
 
-Full-text search of Harvard's library holdings by using Google Books matched up with Harvard via LibraryCloud
+Full-text search of Harvard's library holdings ("HOLLIS") by using Google Books matched up with Harvard via LibraryCloud
 
 Searchges Google Books via its API. It then matches the results with the holdings in Harvard's HOLLIS collection of 13M books. If it doesn't find a match on ISBN, LCCN, or OCLC identifiers, it looks for a match on the title and the author's last name.
     
