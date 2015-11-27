@@ -204,6 +204,19 @@ function buildResultsArray(result) {
 			 newspan.setAttribute("class","gresultnumber gray");
 			 newspan.innerHTML = i;
 			 oneresultdiv.appendChild(newspan);
+			 // is it from Harvard
+			 if ($.isArray(item.ids)){
+			 	var id_source_string = "";
+			 	for (m=0; m < item.ids.length; m++){
+			 		id_source_string = id_source_string + item.ids[m].identifier + " ";
+			 	}
+			 	if (id_source_string.indexOf("HARVARD") > -1){
+			 		var harvspan = document.createElement("span");
+			 		harvspan.setAttribute("class","harvardlogospan");
+			 		harvspan.innerHTML="<img src='images/harvardlogo.jpeg'>";
+			 		oneresultdiv.appendChild(harvspan);
+			 	}
+			 }
 			 // get title and make a span
 			 var newspan = document.createElement("span");
 			 newspan.setAttribute("class","titlespan");
